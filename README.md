@@ -45,8 +45,8 @@ additionalScrapeConfigs:
 
 We also can seting up alerts to slack if it needed:
 
-
-```receivers:
+```
+receivers:
       - name: "null"
       - name: "slack"
         slack_configs:
