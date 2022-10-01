@@ -1,0 +1,36 @@
+name: CI
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+  workflow_dispatch:
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: kube-prometheus-stack 
+        uses: hiberbee/github-action-helm@1.13.0
+        with:
+          helm-version:: v1.4.1
+          helm: helm install prometheus  prometheus-community/kube-prometheus-stack -n unitest --values Unitest/prometheus/kube-prometheus-stack/values.yaml
+          charts_dir: Unitest/prometheus/kube-prometheus-stack/Chart.yaml
+          values: Unitest/prometheus/kube-prometheus-stack/values.yaml
+          namespace: unitest
+          charts_repo_url: https://github.com/prometheus-operator/kube-prometheus
+      - name: Prometheus Blackbox Exporter
+        uses: hiberbee/github-action-helm@1.13.0
+        with:
+          helm-version: v1.4.1
+          helm:  helm install blackbox-exporter  prometheus-community/prometheus-blackbox-exporter -n unitest --values Unitest/prometheus/prometheus-blackbox-exporter/values.yaml
+          charts_dir: Unitest/prometheus/prometheus-blackbox-exporter/Chart.yaml
+          values: Unitest/prometheus/prometheus-blackbox-exporter/values.yaml
+          namespace: unitest
+          charts_repo_url: https://github.com/prometheus-community/helm-charts/tree/main/charts/prometheus-blackbox-exporter
+
+
