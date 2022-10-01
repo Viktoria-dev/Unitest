@@ -52,7 +52,6 @@ receivers:
           - api_url: "..."
             channel: "..."
             send_resolved: true
-
             icon_url: https://avatars3.githubusercontent.com/u/3380462
             title: |-
               [{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] {{ .CommonLabels.alertname }} for {{ .CommonLabels.job }}
