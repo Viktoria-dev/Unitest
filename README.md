@@ -45,7 +45,8 @@ additionalScrapeConfigs:
 ```        
 We also can seting up alerts to slack if it needed:
 
-```
+
+
 receivers:
       - name: "null"
       - name: "slack"
@@ -82,4 +83,7 @@ receivers:
     templates:
       - "/etc/alertmanager/config/*.tmpl"
 ```
- We can also see our dashboards with ```kubctl port-forwarding k port-forward svc/prometheus-grafana -n unitest 3000:80 ```
+ We can also see our dashboards with 
+ ```
+ kubctl port-forwarding k port-forward svc/prometheus-grafana -n unitest 3000:80 
+ ```
