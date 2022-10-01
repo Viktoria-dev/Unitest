@@ -41,14 +41,12 @@ additionalScrapeConfigs:
           target_label: target
           # Ensure blackbox-exporter is reachable from Prometheus
         - target_label: __address__ 
-          replacement: prometheus-blackbox-exporter.monitoring:9115
-```   
+          replacement: prometheus-blackbox-exporter.monitoring:9115 ```   
 
 We also can seting up alerts to slack if it needed:
 
 
-```
-receivers:
+```receivers:
       - name: "null"
       - name: "slack"
         slack_configs:
