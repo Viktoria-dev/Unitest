@@ -44,6 +44,7 @@ additionalScrapeConfigs:
           replacement: prometheus-blackbox-exporter.monitoring:9115
 ```        
 We also can seting up alerts to slack if it needed:
+
 ```
 receivers:
       - name: "null"
@@ -80,6 +81,5 @@ receivers:
               {{ end }}
     templates:
       - "/etc/alertmanager/config/*.tmpl"
-      
 ```
- We can also see our dashboards with port-forwarding k port-forward svc/prometheus-grafana -n unitest 3000:80
+ We can also see our dashboards with ```kubctl port-forwarding k port-forward svc/prometheus-grafana -n unitest 3000:80 ```
