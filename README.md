@@ -6,18 +6,20 @@ Github actions can deploy our two helm releases but we can do it in imperative w
 
 We can use commands to installing our first kube-prometheus-stack release:
 
-
+```
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo update
-
+```
+```
 helm install prometheus prometheus-community/kube-prometheus-stack -n unitest --values Unitest/prometheus/kube-prometheus-stack/values.yaml
-
+```
 And the next commands for installing blackbox-exporter release:
-
+```
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo update
-
+```
 helm install blackbox-exporter prometheus-community/prometheus-blackbox-exporter -n unitest --values Unitest/prometheus/prometheus-blackbox-exporter/values.yaml
+```
 
 seting up  prometheus-blackbox-exporter endpoint to google.com :
 
