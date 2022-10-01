@@ -17,7 +17,7 @@ jobs:
       - name: kube-prometheus-stack 
         uses: hiberbee/github-action-helm@1.13.0
         with:
-          helm: helm install prometheus  prometheus-community/kube-prometheus-stack -n unitest --values Unitest/prometheus/kube-prometheus-stack/values.yaml
+#           helm: helm install prometheus  prometheus-community/kube-prometheus-stack -n unitest --values Unitest/prometheus/kube-prometheus-stack/values.yaml
           charts_dir: Unitest/prometheus/kube-prometheus-stack/Chart.yaml
           values: Unitest/prometheus/kube-prometheus-stack/values.yaml
           namespace: unitest
