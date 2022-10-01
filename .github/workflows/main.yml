@@ -25,7 +25,7 @@ jobs:
       - name: Prometheus Blackbox Exporter
         uses: hiberbee/github-action-helm@1.13.0
         with:
-          helm:  helm install blackbox-exporter  prometheus-community/prometheus-blackbox-exporter -n unitest --values Unitest/prometheus/prometheus-blackbox-exporter/values.yaml
+#           helm:  helm install blackbox-exporter  prometheus-community/prometheus-blackbox-exporter -n unitest --values Unitest/prometheus/prometheus-blackbox-exporter/values.yaml
           charts_dir: Unitest/prometheus/prometheus-blackbox-exporter/Chart.yaml
           values: Unitest/prometheus/prometheus-blackbox-exporter/values.yaml
           namespace: unitest
