@@ -17,11 +17,13 @@ And the next commands for installing blackbox-exporter release:
 ```
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo update
-```
+
 helm install blackbox-exporter prometheus-community/prometheus-blackbox-exporter -n unitest --values Unitest/prometheus/prometheus-blackbox-exporter/values.yaml
 ```
 
 seting up  prometheus-blackbox-exporter endpoint to google.com :
+
+
 
 ```
 additionalScrapeConfigs: 
@@ -42,10 +44,12 @@ additionalScrapeConfigs:
           # Ensure blackbox-exporter is reachable from Prometheus
         - target_label: __address__ 
           replacement: prometheus-blackbox-exporter.monitoring:9115 
-```   
+```
+
 
 
 We also can seting up alerts to slack if it needed:
+
 
 
 ```
