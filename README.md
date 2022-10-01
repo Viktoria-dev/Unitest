@@ -21,7 +21,7 @@ helm install blackbox-exporter prometheus-community/prometheus-blackbox-exporter
 
 seting up  prometheus-blackbox-exporter endpoint to google.com :
 
-
+```
 additionalScrapeConfigs: 
       - job_name: blackbox
         metrics_path: /probe
@@ -40,9 +40,9 @@ additionalScrapeConfigs:
           # Ensure blackbox-exporter is reachable from Prometheus
         - target_label: __address__ 
           replacement: prometheus-blackbox-exporter.monitoring:9115
-          
+```        
 We also can seting up alerts to slack if it needed:
-
+```
 receivers:
       - name: "null"
       - name: "slack"
@@ -80,5 +80,5 @@ receivers:
     templates:
       - "/etc/alertmanager/config/*.tmpl"
       
-
+```
  We can also see our dashboards with port-forwarding k port-forward svc/prometheus-grafana -n unitest 3000:80
