@@ -96,7 +96,7 @@ receivers:
 
 Added dashboard which provides cluster admins with the ability to monitor nodes and identify workload bottlenecks. WITH ID: 10000
 
-Changed password on "unitest123"6 but we can define it with `--set` flag
+Changed password to "unitest123" but we can define it with `--set` flag
 run local command  `password=unitest123`
 `helm upgrade install prometheus prometheus-community/kube-prometheus-stack -n unitest --values Unitest/prometheus/kube-prometheus-stack/values.yaml --set $password`
 
@@ -110,7 +110,7 @@ additionalPrometheusRules:
       annotations:
         description: 'Node memory is filling up (< 80% left)\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}'
         title: Host out of memory (instance {{ $labels.instance }})
-      expr: cluster:namespace:pod_memory:active:kube_pod_container_resource_limits{namespace="platform-sandbox"} / 10000000000 >80
+      expr: cluster:namespace:pod_memory:active:kube_pod_container_resource_limits{namespace="unitest"} / 10000000000 >80
       for: 2m
       labels:
         severity: warning
@@ -118,7 +118,7 @@ additionalPrometheusRules:
       annotations:
         description: 'CPU load is > 80%\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}'
         title: Host high CPU load (instance {{ $labels.instance }})
-      expr: cluster:namespace:pod_cpu:active:kube_pod_container_resource_limits{namespace="platform-sandbox"} >  80
+      expr: cluster:namespace:pod_cpu:active:kube_pod_container_resource_limits{namespace="unitest"} >  80
       for: 2m
       labels:
         severity: warning
@@ -126,7 +126,7 @@ additionalPrometheusRules:
       annotations:
         description: 'Disk on PVC is almost full (< 20% left)\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}'
         title: Host out of disk space (instance {{ $labels.instance }})
-      expr: (max by (persistentvolumeclaim,namespace) (kubelet_volume_stats_used_bytes{namespace="platform-sandbox"})) / 1000000 > 80
+      expr: (max by (persistentvolumeclaim,namespace) (kubelet_volume_stats_used_bytes{namespace="unitest"})) / 1000000 > 80
       for: 2m
       labels:
         severity: warning
@@ -150,7 +150,7 @@ additionalPrometheusRules:
       annotations:
         description: PVC-Sandbox-efs is almost full (< 80% left)
         title: PVC-Sandbox-efs out of disk space
-      expr: count(kube_persistentvolumeclaim_info{storageclass=~"sandbox-efs.*"}) * 100 / (count(kube_storageclass_info{provisioner="efs.csi.aws.com", storageclass=~"sandbox-efs.*"})*120)  > 80
+      expr: count(kube_persistentvolumeclaim_info{storageclass=~"sandbox-efs.*"}) * 100 / (count(kube_storageclass_info{provisioner="efs.csi.aws.com", storageclass=~"unitest-efs.*"})*120)  > 80
       for: 2m
       labels:
         severity: warning
