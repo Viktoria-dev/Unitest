@@ -93,3 +93,65 @@ receivers:
  ```
  kubctl port-forwarding k port-forward svc/prometheus-grafana -n unitest 3000:80 
  ```
+
+Added dashboard which provides cluster admins with the ability to monitor nodes and identify workload bottlenecks. WITH ID: 10000
+
+Changed password on "unitest123"6 but we can define it with `--set` flag
+run local command  `password=unitest123`
+`helm upgrade install prometheus prometheus-community/kube-prometheus-stack -n unitest --values Unitest/prometheus/kube-prometheus-stack/values.yaml --set $password`
+
+Added alerts: CPU, memory, disk
+
+```
+additionalPrometheusRules: 
+  - name: general.rules
+    rules:
+    - alert: HostOutOfMemory
+      annotations:
+        description: 'Node memory is filling up (< 80% left)\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}'
+        title: Host out of memory (instance {{ $labels.instance }})
+      expr: cluster:namespace:pod_memory:active:kube_pod_container_resource_limits{namespace="platform-sandbox"} / 10000000000 >80
+      for: 2m
+      labels:
+        severity: warning
+    - alert: HostHighCpuLoad
+      annotations:
+        description: 'CPU load is > 80%\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}'
+        title: Host high CPU load (instance {{ $labels.instance }})
+      expr: cluster:namespace:pod_cpu:active:kube_pod_container_resource_limits{namespace="platform-sandbox"} >  80
+      for: 2m
+      labels:
+        severity: warning
+    - alert: Host-Out-Of-Disk-PVC
+      annotations:
+        description: 'Disk on PVC is almost full (< 20% left)\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}'
+        title: Host out of disk space (instance {{ $labels.instance }})
+      expr: (max by (persistentvolumeclaim,namespace) (kubelet_volume_stats_used_bytes{namespace="platform-sandbox"})) / 1000000 > 80
+      for: 2m
+      labels:
+        severity: warning
+    - alert: HostOutOfDiskSpace
+      annotations:
+        description: 'Disk is almost full (< 80% left)\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}'
+        title: Host out of disk space (instance {{ $labels.instance }})
+      expr: (node_filesystem_avail_bytes{fstype!="",job="node-exporter"} / node_filesystem_size_bytes{fstype!="",job="node-exporter"} * 100 < 20 and node_filesystem_readonly{fstype!="",job="node-exporter"} ==  0)
+      for: 2m
+      labels:
+        severity: warning
+    - alert: PVC-Storage-Class
+      annotations:
+        description: PVC-Storage-Class is almost full (< 80% left)
+        title: PVC-Storage-Class out of disk space
+      expr: (count(kube_persistentvolumeclaim_info {storageclass="efs-sc"} )*100)/120 > 80
+      for: 2m
+      labels:
+        severity: warning
+    - alert: PVC-Sandbox-efs
+      annotations:
+        description: PVC-Sandbox-efs is almost full (< 80% left)
+        title: PVC-Sandbox-efs out of disk space
+      expr: count(kube_persistentvolumeclaim_info{storageclass=~"sandbox-efs.*"}) * 100 / (count(kube_storageclass_info{provisioner="efs.csi.aws.com", storageclass=~"sandbox-efs.*"})*120)  > 80
+      for: 2m
+      labels:
+        severity: warning
+```
